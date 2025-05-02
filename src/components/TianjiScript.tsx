@@ -6,7 +6,7 @@ const TianjiScript = () => {
     script.src = "https://tianji.ajamy.tech/tracker.js";
     script.async = true;
     script.defer = true;
-    script.setAttribute("data-website-id", "cm5u5ze0q0001kzx1tj5odqr2");
+    script.setAttribute("data-website-id", "cma6w1ur50001z7jicpd8tgvb");
     document.head.appendChild(script);
 
     return () => {
