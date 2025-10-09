@@ -1,17 +1,15 @@
-# netlify.toml
-
 [build]
-  publish = "dist"       # Vite's default build output folder
+  publish = "dist"
   command = "npm run build"
 
-# Prevent caching for index.html (so browser always loads the latest version)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
 [[headers]]
   for = "/index.html"
   [headers.values]
-    Cache-Control = "no-cache"
-
-# Optional: Cache other static assets (JS/CSS/images) for performance
-[[headers]]
-  for = "/*.{js,css,png,jpg,jpeg,gif,svg,webp,woff2}"
-  [headers.values]
-    Cache-Control = "max-age=31536000, immutable"
+    Cache-Control = "no-store, no-cache, must-revalidate, proxy-revalidate"
+    Pragma = "no-cache"
+    Expires = "0"
