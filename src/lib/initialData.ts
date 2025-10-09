@@ -50,7 +50,7 @@ export const initialProjects: Project[] = [
     thumbnail: 'https://vumbnail.com/1125809997.jpg',
   },
   {
-    id: '4',
+    id: '7',
     title: 'Muntasir Elagami 2025 Showreel',
     category: 'Personal Artistic Work',
     vimeoId: '1107871758',
@@ -58,7 +58,7 @@ export const initialProjects: Project[] = [
     thumbnail: 'https://vumbnail.com/1107871758.jpg',
   },
   {
-    id: '5',
+    id: '8',
     title: 'Instagram Content Showcase',
     category: 'Social Media Content',
     vimeoId: '1098329505',
@@ -66,7 +66,7 @@ export const initialProjects: Project[] = [
     thumbnail: 'https://vumbnail.com/1098329505.jpg',
   },
   {
-    id: '6',
+    id: '9',
     title: 'Lotus Car Commercial',
     category: 'TV Production',
     vimeoId: '1098330070',
@@ -74,7 +74,7 @@ export const initialProjects: Project[] = [
     thumbnail: 'https://vumbnail.com/1098330070.jpg',
   },
   {
-    id: '7',
+    id: '10',
     title: 'Arab Media Summit Mona Kattan',
     category: 'Events',
     vimeoId: '1098329739',
@@ -82,7 +82,7 @@ export const initialProjects: Project[] = [
     thumbnail: 'https://vumbnail.com/1098329739.jpg',
   },
   {
-    id: '8',
+    id: '11',
     title: 'Arab Media Summit Prizes',
     category: 'Events',
     vimeoId: '1098329579',
@@ -90,7 +90,7 @@ export const initialProjects: Project[] = [
     thumbnail: 'https://vumbnail.com/1098329579.jpg',
   },
   {
-    id: '9',
+    id: '12',
     title: 'Instagram Content by Salma Hibti',
     category: 'Social Media Content',
     vimeoId: '1098329484',
@@ -98,7 +98,7 @@ export const initialProjects: Project[] = [
     thumbnail: 'https://vumbnail.com/1098329484.jpg',
   },
   {
-    id: '10',
+    id: '13',
     title: 'UAEU CEO Speech at Gitex',
     category: 'Events',
     vimeoId: '1041819280',
@@ -106,7 +106,7 @@ export const initialProjects: Project[] = [
     thumbnail: 'https://vumbnail.com/1041819280.jpg',
   },
   {
-    id: '11',
+    id: '14',
     title: 'Real Madrid Foundation Highlight',
     category: 'Social Media Content',
     vimeoId: '1041819630',
@@ -114,7 +114,7 @@ export const initialProjects: Project[] = [
     thumbnail: 'https://vumbnail.com/1041819630.jpg',
   },
   {
-    id: '12',
+    id: '15',
     title: 'Protocom 2024',
     category: 'Events',
     vimeoId: '1041819899',
@@ -122,7 +122,7 @@ export const initialProjects: Project[] = [
     thumbnail: 'https://vumbnail.com/1041819899.jpg',
   },
   {
-    id: '13',
+    id: '16',
     title: 'Protocom 2024',
     category: 'Events',
     vimeoId: '1041820339',
@@ -130,7 +130,7 @@ export const initialProjects: Project[] = [
     thumbnail: 'https://vumbnail.com/1041820339.jpg',
   },
   {
-    id: '14',
+    id: '17',
     title: 'Regenerative Medicine Advances in Coloproctology and Gynecology 2024',
     category: 'Events',
     vimeoId: '1041821533',
@@ -138,7 +138,7 @@ export const initialProjects: Project[] = [
     thumbnail: 'https://vumbnail.com/1041821533.jpg',
   },
   {
-    id: '15',
+    id: '18',
     title: 'Real Madrid Foundation Highlight',
     category: 'Social Media Content',
     vimeoId: '1041822129',
@@ -146,7 +146,7 @@ export const initialProjects: Project[] = [
     thumbnail: 'https://vumbnail.com/1041822129.jpg',
   },
   {
-    id: '16',
+    id: '19',
     title: 'Real Madrid Foundation Highlight',
     category: 'Social Media Content',
     vimeoId: '1041822169',
@@ -154,7 +154,7 @@ export const initialProjects: Project[] = [
     thumbnail: 'https://vumbnail.com/1041822169.jpg',
   },
   {
-    id: '17',
+    id: '20',
     title: 'UAEU Students at Gitex',
     category: 'Social Media Content',
     vimeoId: '1041822199',
@@ -162,7 +162,7 @@ export const initialProjects: Project[] = [
     thumbnail: 'https://vumbnail.com/1041822199.jpg',
   },
   {
-    id: '18',
+    id: '21',
     title: 'W.I.N Mena Conference',
     category: 'Events',
     vimeoId: '1041822365',
@@ -170,7 +170,7 @@ export const initialProjects: Project[] = [
     thumbnail: 'https://vumbnail.com/1041822365.jpg',
   },
   {
-    id: '19',
+    id: '22',
     title: 'Makeup Videography',
     category: 'Personal Artistic Work',
     vimeoId: '1042029456',
@@ -178,7 +178,7 @@ export const initialProjects: Project[] = [
     thumbnail: 'https://vumbnail.com/1042029456.jpg',
   },
   {
-    id: '20',
+    id: '23',
     title: 'Hamdan Colony Ramadan Nights',
     category: 'Social Media Content',
     vimeoId: '1042029993',
@@ -186,7 +186,7 @@ export const initialProjects: Project[] = [
     thumbnail: 'https://vumbnail.com/1042029993.jpg',
   },
   {
-    id: '21',
+    id: '24',
     title: 'Hamdan Colony Ramadan Nights',
     category: 'Social Media Content',
     vimeoId: '1042030043',
@@ -194,7 +194,7 @@ export const initialProjects: Project[] = [
     thumbnail: 'https://vumbnail.com/1042030043.jpg',
   },
   {
-    id: '22',
+    id: '25',
     title: 'In Photo Space Community (What My Eyes See) ',
     category: 'Personal Artistic Work',
     vimeoId: '1042030090',
@@ -202,7 +202,7 @@ export const initialProjects: Project[] = [
     thumbnail: 'https://vumbnail.com/1042030090.jpg',
   },
   {
-    id: '23',
+    id: '26',
     title: 'In Photo Space Community',
     category: 'Social Media Content',
     vimeoId: '1042030143',
@@ -210,7 +210,7 @@ export const initialProjects: Project[] = [
     thumbnail: 'https://vumbnail.com/1042030143.jpg',
   },
   {
-    id: '24',
+    id: '27',
     title: 'Highlight on Nikon ZF Camera SOCIAL MEDIA',
     category: 'Social Media Content',
     vimeoId: '1042030879',
@@ -218,7 +218,7 @@ export const initialProjects: Project[] = [
     thumbnail: 'https://vumbnail.com/1042030879.jpg',
   },
   {
-    id: '25',
+    id: '28',
     title: 'Highlight on Nikon ZF Camera',
     category: 'Personal Artistic Work',
     vimeoId: '1042030917',
@@ -226,7 +226,7 @@ export const initialProjects: Project[] = [
     thumbnail: 'https://vumbnail.com/1042030917.jpg',
   },
   {
-    id: '26',
+    id: '29',
     title: 'Cinematic Portrait Of a Lady',
     category: 'Personal Artistic Work',
     vimeoId: '1042041482',
@@ -234,7 +234,7 @@ export const initialProjects: Project[] = [
     thumbnail: 'https://vumbnail.com/1042041482.jpg',
   },
   {
-    id: '27',
+    id: '30',
     title: 'Work Space Highlight Video',
     category: 'Personal Artistic Work',
     vimeoId: '1042041532',
@@ -242,7 +242,7 @@ export const initialProjects: Project[] = [
     thumbnail: 'https://vumbnail.com/1042041532.jpg',
   },
   {
-    id: '28',
+    id: '31',
     title: 'Cinematic Makeup Photo Session and Tutorial',
     category: 'Personal Artistic Work',
     vimeoId: '1042041558',
@@ -250,7 +250,7 @@ export const initialProjects: Project[] = [
     thumbnail: 'https://vumbnail.com/1042041558.jpg',
   },
   {
-    id: '29',
+    id: '32',
     title: 'Timelapse Between The Ages',
     category: 'Social Media Content',
     vimeoId: '530235068',
@@ -258,7 +258,7 @@ export const initialProjects: Project[] = [
     thumbnail: 'https://vumbnail.com/530235068.jpg',
   },
   {
-    id: '30',
+    id: '33',
     title: 'TV News Report',
     category: 'TV Production',
     vimeoId: '530234471',
@@ -266,7 +266,7 @@ export const initialProjects: Project[] = [
     thumbnail: 'https://vumbnail.com/530234471.jpg',
   },
   {
-    id: '31',
+    id: '34',
     title: 'A Glimpse from the Heritage Episode',
     category: 'TV Production',
     vimeoId: '530236368',
@@ -274,7 +274,7 @@ export const initialProjects: Project[] = [
     thumbnail: 'https://vumbnail.com/530236368.jpg',
   },
   {
-    id: '32',
+    id: '35',
     title: 'A Glimpse from the Heritage Episode',
     category: 'TV Production',
     vimeoId: '530242160',
@@ -282,60 +282,12 @@ export const initialProjects: Project[] = [
     thumbnail: 'https://vumbnail.com/530242160.jpg',
   },
   {
-    id: '33',
+    id: '36',
     title: 'Event Promo',
     category: 'Events',
     vimeoId: '530106103',
     description: 'Event Highlight.',
     thumbnail: 'https://vumbnail.com/530106103.jpg',
-  },
-  {
-    id: '34',
-    title: 'Varkey (The City Of Soul)',
-    category: 'Documentaries',
-    vimeoId: '528591162',
-    description: 'TV Documentary',
-    thumbnail: 'https://vumbnail.com/528591162.jpg',
-  },
-  {
-    id: '35',
-    title: 'Promo of the series "Tears of Men"',
-    category: 'TV Production',
-    vimeoId: '524881026',
-    description: 'TV Series Promo.',
-    thumbnail: 'https://vumbnail.com/524881026.jpg',
-  },
-  {
-    id: '36',
-    title: 'A Glimpse from the Heritage Promo',
-    category: 'TV Production',
-    vimeoId: '524883203',
-    description: 'TV Show Promo.',
-    thumbnail: 'https://vumbnail.com/524883203.jpg',
-  },
-  {
-    id: '34',
-    title: 'Varkey (The City Of Soul)',
-    category: 'Documentaries',
-    vimeoId: '528591162',
-    description: 'TV Documentary',
-    thumbnail: 'https://vumbnail.com/528591162.jpg',
-  },
-  {
-    id: '35',
-    title: 'Promo of the series "Tears of Men"',
-    category: 'TV Production',
-    vimeoId: '524881026',
-    description: 'TV Series Promo.',
-    thumbnail: 'https://vumbnail.com/524881026.jpg',
-  },
-  {
-    id: '36',
-    title: 'A Glimpse from the Heritage Promo',
-    category: 'TV Production',
-    vimeoId: '524883203',
-    description: 'TV Show Promo.',
-    thumbnail: 'https://vumbnail.com/524883203.jpg',
   },
   // Real Estate Videos Below
   {
