@@ -450,4 +450,13 @@ export const initialProjects: Project[] = [
     description: 'Corporate promotional video for Property Shop Investment.',
     thumbnail: 'https://vumbnail.com/1125810912.jpg',
   },
+  {
+    id: '57',
+    title: 'Dubai Media Academy Workshop - Day 2',
+    category: 'Events',
+    vimeoId: '1125810362',
+    description: 'Second day highlights from the Dubai Media Academy workshop sessions.',
+    thumbnail: 'https://vumbnail.com/1125810362.jpg',
+  },
 ];
+
