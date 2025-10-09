@@ -17,7 +17,7 @@ export default function Hero() {
           }}
         >
           <iframe
-            src="https://customer-4lrqk43t1t0tnv7t.cloudflarestream.com/e46eeb670cac1e345a54d903d7a997c8/iframe?preload=true&loop=true&autoplay=true&poster=https%3A%2F%2Fcustomer-4lrqk43t1t0tnv7t.cloudflarestream.com%2Fe46eeb670cac1e345a54d903d7a997c8%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600"
+            src="https://customer-4lrqk43t1t0tnv7t.cloudflarestream.com/e46eeb670cac1e345a54d903d7a997c8/iframe?muted=true&preload=true&loop=true&autoplay=true&poster=https%3A%2F%2Fcustomer-4lrqk43t1t0tnv7t.cloudflarestream.com%2Fe46eeb670cac1e345a54d903d7a997c8%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600"
             style={{
               position: 'absolute',
               top: '50%',
