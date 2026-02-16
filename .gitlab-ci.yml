@@ -1,0 +1,47 @@
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  DEPLOY_SERVER: "192.168.30.167"
+
+build:
+  stage: build
+  script:
+    - echo "Building application..."
+    - npm install
+    - npm run build
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 1 hour
+  only:
+    - main
+
+test:
+  stage: test
+  script:
+    - echo "Running linting..."
+    - npm run lint
+  only:
+    - main
+    - merge_requests
+
+deploy-prod:
+  stage: deploy
+  script:
+    - echo "Deploying to production..."
+    # Ensure target directory exists and has correct permissions
+    - sudo mkdir -p /var/www/website-seo-fixed02
+    - sudo chown -R gitlab-runner:gitlab-runner /var/www/website-seo-fixed02
+    # Sync public files
+    - rsync -avz --delete dist/ /var/www/website-seo-fixed02/
+    # If using Nginx, you might need to reload or ensure config points here.
+    # Assuming Nginx is already serving this directory or will be configured manually.
+  only:
+    - main
+  when: manual
+  environment:
+    name: production
+    url: http://192.168.30.167/website-seo-fixed02
