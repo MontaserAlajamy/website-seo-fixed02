@@ -19,31 +19,44 @@ interface UniversalPlayerProps {
  * Detect the video source from a URL string.
  */
 export function detectVideoSource(url: string): { source: VideoSource; id: string; subdomain?: string } {
+    if (!url) return { source: 'vimeo', id: '' };
+    const trimmed = url.trim();
+
     // Vimeo
-    const vimeoMatch = url.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+    const vimeoMatch = trimmed.match(/vimeo\.com\/(?:video\/)?(\d+)/);
     if (vimeoMatch) return { source: 'vimeo', id: vimeoMatch[1] };
 
     // YouTube
-    const ytMatch = url.match(
+    const ytMatch = trimmed.match(
         /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
     );
     if (ytMatch) return { source: 'youtube', id: ytMatch[1] };
 
     // Cloudflare customer subdomain
-    const cfCustomerMatch = url.match(/(customer-[a-z0-9]+)\.cloudflarestream\.com\/([a-f0-9]{32})/);
+    const cfCustomerMatch = trimmed.match(/(customer-[a-z0-9]+)\.cloudflarestream\.com\/([a-f0-9]{32})/);
     if (cfCustomerMatch) return { source: 'cloudflare', subdomain: cfCustomerMatch[1], id: cfCustomerMatch[2] };
 
     // Cloudflare Stream (generic)
-    const cfMatch = url.match(/cloudflarestream\.com\/([a-f0-9]{32})/);
+    const cfMatch = trimmed.match(/cloudflarestream\.com\/([a-f0-9]{32})/);
     if (cfMatch) return { source: 'cloudflare', id: cfMatch[1] };
 
+    // Standalone Cloudflare ID (32 hex chars)
+    if (trimmed.length === 32 && /^[a-f0-9]{32}$/i.test(trimmed)) {
+        return { source: 'cloudflare', id: trimmed.toLowerCase() };
+    }
+
     // If it looks like a raw video file
-    if (/\.(mp4|webm|ogg|mov)(\?|$)/i.test(url)) {
-        return { source: 'direct', id: url };
+    if (/\.(mp4|webm|ogg|mov)(\?|$)/i.test(trimmed)) {
+        return { source: 'direct', id: trimmed };
+    }
+
+    // Treat non-URL IDs as Vimeo by default if digits only
+    if (/^\d+$/.test(trimmed)) {
+        return { source: 'vimeo', id: trimmed };
     }
 
     // Default: treat as direct URL
-    return { source: 'direct', id: url };
+    return { source: 'direct', id: trimmed };
 }
 
 function buildVimeoUrl(id: string, opts: { autoplay?: boolean; muted?: boolean; controls?: boolean; loop?: boolean; background?: boolean }) {
@@ -106,10 +119,19 @@ export default function UniversalPlayer({
 
     if (videoUrl) {
         const detected = detectVideoSource(videoUrl);
-        resolvedSource = source || detected.source;
+        // Prioritize detected source if a URL is provided
+        resolvedSource = detected.source;
         resolvedId = detected.id;
         if (detected.subdomain) {
             resolvedSubdomain = detected.subdomain;
+        }
+    } else if (videoId) {
+        // Even if only an ID is provided, try to detect if it's actually Cloudflare
+        const detected = detectVideoSource(videoId);
+        if (detected.source !== 'direct') {
+            resolvedSource = detected.source;
+            resolvedId = detected.id;
+            if (detected.subdomain) resolvedSubdomain = detected.subdomain;
         }
     }
 

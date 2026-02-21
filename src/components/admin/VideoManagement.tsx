@@ -51,21 +51,6 @@ export default function VideoManagement() {
     setEditingId(project.id);
   };
 
-  const handleVideoUrlChange = (url: string) => {
-    setFormData(prev => ({ ...prev, video_url: url }));
-    if (url.trim()) {
-      const detected = detectVideoSource(url);
-      setDetectedSource(`${detected.source} (ID: ${detected.id.substring(0, 20)}${detected.id.length > 20 ? '...' : ''})`);
-      setFormData(prev => ({
-        ...prev,
-        video_url: url,
-        video_source: detected.source,
-        vimeo_id: detected.source === 'vimeo' ? detected.id : prev.vimeo_id,
-      }));
-    } else {
-      setDetectedSource('');
-    }
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -156,7 +141,7 @@ export default function VideoManagement() {
                 </label>
                 <select
                   value={formData.category}
-                  onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                  onChange={(e) => setFormData({ ...formData, category: e.target.value as any })}
                   className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                 >
                   {CATEGORIES.map((cat) => (
@@ -179,17 +164,22 @@ export default function VideoManagement() {
                 value={formData.video_url || formData.vimeo_id}
                 onChange={(e) => {
                   const val = e.target.value;
-                  // If it looks like a URL, auto-detect
-                  if (val.includes('://') || val.includes('.com')) {
-                    handleVideoUrlChange(val);
+                  if (val.trim()) {
+                    const detected = detectVideoSource(val);
+                    setDetectedSource(`${detected.source} (ID: ${detected.id.substring(0, 20)}${detected.id.length > 20 ? '...' : ''})`);
+                    setFormData(prev => ({
+                      ...prev,
+                      video_url: val.includes('://') ? val : '',
+                      vimeo_id: detected.source === 'vimeo' ? detected.id : prev.vimeo_id,
+                      video_source: detected.source
+                    }));
                   } else {
-                    // Treat as Vimeo ID
-                    setFormData({ ...formData, vimeo_id: val, video_source: 'vimeo' });
-                    setDetectedSource(val ? `vimeo (ID: ${val})` : '');
+                    setDetectedSource('');
+                    setFormData(prev => ({ ...prev, video_url: '', vimeo_id: '', video_source: 'vimeo' }));
                   }
                 }}
                 className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
-                placeholder="Paste Vimeo/YouTube/Cloudflare URL or Vimeo ID"
+                placeholder="Paste Vimeo/YouTube/Cloudflare URL or ID"
               />
               {detectedSource && (
                 <p className="text-xs text-green-600 dark:text-green-400 mt-1">
@@ -271,8 +261,8 @@ export default function VideoManagement() {
           >
             <div className="aspect-video">
               <UniversalPlayer
-                videoId={project.vimeo_id}
-                videoUrl={project.video_url}
+                videoId={project.vimeo_id || undefined}
+                videoUrl={project.video_url || undefined}
                 source={project.video_source as VideoSource || 'vimeo'}
               />
             </div>
