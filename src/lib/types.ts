@@ -23,6 +23,9 @@ export interface Project {
   featured?: boolean;
   tags?: string[];
   type: 'video' | 'photo';
+  vimeoId?: string;
+  videoUrl?: string;
+  videoSource?: 'vimeo' | 'youtube' | 'cloudflare' | 'direct';
 }
 
 export interface Profile {

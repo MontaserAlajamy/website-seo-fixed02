@@ -5,10 +5,11 @@ import CategoryFilter from './CategoryFilter';
 import VideoModal from '../VideoModal';
 import { useProjects } from '../../hooks/useProjects';
 import { CATEGORIES } from '../../lib/constants';
+import type { Project } from '../../lib/types';
 
 export default function ProjectGrid() {
   const [selectedCategory, setSelectedCategory] = React.useState('all');
-  const [selectedVideo, setSelectedVideo] = React.useState<string | null>(null);
+  const [selectedProject, setSelectedProject] = React.useState<Project | null>(null);
   const { projects } = useProjects();
 
   const filteredProjects = selectedCategory === 'all'
@@ -18,12 +19,12 @@ export default function ProjectGrid() {
   return (
     <>
       <CategoryFilter
-        categories={CATEGORIES}
+        categories={CATEGORIES as any}
         selectedCategory={selectedCategory}
         onCategoryChange={setSelectedCategory}
       />
 
-      <motion.div 
+      <motion.div
         layout
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
       >
@@ -39,17 +40,19 @@ export default function ProjectGrid() {
             >
               <ProjectCard
                 {...project}
-                onPlay={() => setSelectedVideo(project.vimeoId)}
+                onPlay={() => setSelectedProject(project)}
               />
             </motion.div>
           ))}
         </AnimatePresence>
       </motion.div>
 
-      {selectedVideo && (
+      {selectedProject && (
         <VideoModal
-          videoId={selectedVideo}
-          onClose={() => setSelectedVideo(null)}
+          videoId={selectedProject.vimeoId || ''}
+          videoUrl={selectedProject.videoUrl}
+          videoSource={selectedProject.videoSource}
+          onClose={() => setSelectedProject(null)}
         />
       )}
     </>
