@@ -10,16 +10,6 @@ export default function Portfolio() {
         </h1>
 
         <ProjectGrid />
-
-        <div className="mt-20 text-center">
-          <h2 className="text-3xl font-bold mb-6">Let's Create Stunning Visuals Together!</h2>
-          <button
-            onClick={() => window.contactForm.showModal()}
-            className="px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-500 text-white rounded-full text-lg font-semibold hover:from-purple-700 hover:to-blue-600 transition-all duration-300"
-          >
-            Get in Touch
-          </button>
-        </div>
       </div>
     </div>
   );
