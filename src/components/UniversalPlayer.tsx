@@ -12,6 +12,7 @@ interface UniversalPlayerProps {
     controls?: boolean;
     loop?: boolean;
     background?: boolean;
+    fill?: boolean;
 }
 
 /**
@@ -83,6 +84,7 @@ function buildCloudflareUrl(id: string, opts: { autoplay?: boolean; muted?: bool
     if (opts.muted) params.set('muted', 'true');
     if (opts.controls === false) params.set('controls', 'false');
     if (opts.loop) params.set('loop', 'true');
+    // Using the account ID observed from the user's dashboard records
     return `https://customer-ajj0x7flqjhaqqqt.cloudflarestream.com/${id}/iframe?${params.toString()}`;
 }
 
@@ -96,6 +98,7 @@ export default function UniversalPlayer({
     controls = true,
     loop = false,
     background = false,
+    fill = false,
 }: UniversalPlayerProps) {
     // Determine source and ID
     let resolvedSource = source || 'vimeo';
@@ -109,13 +112,21 @@ export default function UniversalPlayer({
 
     const opts = { autoplay, muted: muted || background, controls: controls && !background, loop: loop || background, background };
 
+    const containerStyle = fill
+        ? { position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' } as const
+        : { position: 'relative', paddingBottom: '56.25%', width: '100%' } as const;
+
+    const mediaClass = fill
+        ? "absolute inset-0 w-full h-full object-cover scale-[1.02]" // Subtle scale to hide any edge gaps
+        : "absolute inset-0 w-full h-full";
+
     // Direct video — use <video> tag
     if (resolvedSource === 'direct') {
         return (
-            <div className={`relative ${className}`} style={{ paddingBottom: '56.25%' }}>
+            <div className={`${className}`} style={containerStyle}>
                 <video
                     src={resolvedId}
-                    className="absolute inset-0 w-full h-full object-cover"
+                    className={mediaClass}
                     autoPlay={opts.autoplay}
                     muted={opts.muted}
                     controls={opts.controls}
@@ -141,10 +152,10 @@ export default function UniversalPlayer({
     }
 
     return (
-        <div className={`relative ${className}`} style={{ paddingBottom: '56.25%' }}>
+        <div className={`${className}`} style={containerStyle}>
             <iframe
                 src={iframeSrc}
-                className="absolute inset-0 w-full h-full"
+                className={mediaClass}
                 allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
                 allowFullScreen
                 style={{ border: 'none' }}
