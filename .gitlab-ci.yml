@@ -3,9 +3,6 @@ stages:
   - test
   - deploy
 
-variables:
-  DEPLOY_SERVER: "192.168.30.167"
-
 build:
   stage: build
   script:
@@ -31,17 +28,12 @@ test:
 deploy-prod:
   stage: deploy
   script:
-    - echo "Deploying to production..."
-    # Ensure target directory exists and has correct permissions
-    - sudo mkdir -p /var/www/website-seo-fixed02
-    - sudo chown -R gitlab-runner:gitlab-runner /var/www/website-seo-fixed02
-    # Sync public files
-    - rsync -avz --delete dist/ /var/www/website-seo-fixed02/
-    # If using Nginx, you might need to reload or ensure config points here.
-    # Assuming Nginx is already serving this directory or will be configured manually.
+    - echo "Deploying to Cloudflare Pages..."
+    - npm install -g wrangler
+    - wrangler pages deploy dist --project-name=website-seo-fixed02 --commit-dirty=true
   only:
     - main
   when: manual
   environment:
     name: production
-    url: http://192.168.30.167/website-seo-fixed02
+    url: https://muntasirelagami.com
