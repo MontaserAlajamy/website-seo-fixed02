@@ -26,9 +26,18 @@ export default function Header({ toggleTheme, isDarkMode }: HeaderProps) {
         <div className="flex justify-between items-center py-4">
           <Link
             to="/"
-            className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent hover:scale-105 transition-transform"
+            className="flex items-center gap-3 group transition-transform hover:scale-105"
           >
-            Muntasir Elagami
+            <div className="relative w-10 h-10 overflow-hidden rounded-lg bg-gray-900 shadow-lg shadow-purple-500/20 group-hover:shadow-purple-500/40 transition-shadow">
+              <img
+                src="/logo.png"
+                alt="Ajamy Productions"
+                className="w-full h-full object-cover scale-110"
+              />
+            </div>
+            <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent group-hover:from-purple-300 group-hover:to-blue-300 transition-colors">
+              Muntasir Elagami
+            </span>
           </Link>
 
           <div className="hidden md:flex items-center space-x-8">
