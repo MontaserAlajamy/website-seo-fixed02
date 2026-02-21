@@ -14,7 +14,7 @@ export default function Blog() {
         <div className="min-h-screen bg-white dark:bg-gray-900 pt-24 pb-16">
             <MetaTags
                 title="Blog"
-                description="Behind-the-scenes stories, production insights, and creative reflections from Ajamy Productions in Dubai."
+                description="Behind-the-scenes stories, production insights, and creative reflections from Muntasir Elagami Production in Dubai."
                 keywords="video production blog, filmmaking insights, behind the scenes dubai, creative content production"
                 url={`${BASE_URL}/blog`}
             />

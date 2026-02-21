@@ -14,7 +14,7 @@ export default function Photography() {
         <div className="min-h-screen bg-white dark:bg-gray-900 pt-24 pb-16">
             <MetaTags
                 title="Photography"
-                description="Explore photography albums by Ajamy Productions — events, portraits, landscapes, and creative work across Dubai and the UAE."
+                description="Explore photography albums by Muntasir Elagami Production — events, portraits, landscapes, and creative work across Dubai and the UAE."
                 keywords="photography dubai, event photographer uae, portrait photography, creative photography"
                 url={`${BASE_URL}/photography`}
             />

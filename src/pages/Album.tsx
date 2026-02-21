@@ -51,7 +51,7 @@ export default function Album() {
                 <>
                     <MetaTags
                         title={album.title}
-                        description={album.description || `Browse the ${album.title} photography album by Ajamy Productions.`}
+                        description={album.description || `Browse the ${album.title} photography album by Muntasir Elagami Production.`}
                         image={album.cover_image_url || undefined}
                         url={`${BASE_URL}/photography/${albumId}`}
                     />

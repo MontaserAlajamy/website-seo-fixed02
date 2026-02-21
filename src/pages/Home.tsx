@@ -23,7 +23,7 @@ export default function Home() {
       />
       <JsonLd
         data={structuredData.organization({
-          name: 'Ajamy Productions',
+          name: 'Muntasir Elagami Production',
           url: BASE_URL,
           logo: `${BASE_URL}/logo.png`,
           description: META_DESCRIPTIONS.home.en,

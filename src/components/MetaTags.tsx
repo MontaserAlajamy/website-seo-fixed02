@@ -25,10 +25,10 @@ export default function MetaTags({
     image,
     url,
     type = 'website',
-    author = 'Ajamy Productions',
+    author = 'Muntasir Elagami Production',
     publishedTime,
     locale = 'en_US',
-    siteName = 'Ajamy Productions',
+    siteName = 'Muntasir Elagami Production',
     twitterCard = 'summary_large_image',
 }: MetaTagsProps) {
     useEffect(() => {
@@ -144,7 +144,7 @@ export const structuredData = {
         },
         publisher: {
             '@type': 'Organization',
-            name: 'Ajamy Productions',
+            name: 'Muntasir Elagami Production',
         },
         ...(opts.image && { image: opts.image }),
         ...(opts.url && { url: opts.url }),

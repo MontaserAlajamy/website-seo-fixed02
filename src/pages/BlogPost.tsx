@@ -65,7 +65,7 @@ export default function BlogPost() {
         <div className="min-h-screen bg-white dark:bg-gray-900 pt-24 pb-16">
             <MetaTags
                 title={post.title}
-                description={post.excerpt || `Read "${post.title}" on the Ajamy Productions blog.`}
+                description={post.excerpt || `Read "${post.title}" on the Muntasir Elagami Production blog.`}
                 image={post.cover_image_url || undefined}
                 url={`${BASE_URL}/blog/${post.slug}`}
                 type="article"
