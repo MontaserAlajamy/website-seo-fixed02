@@ -44,7 +44,7 @@ export default function ParticlesBackground() {
               enable: true,
               area: 800,
             },
-            value: 40,
+            value: typeof window !== 'undefined' && window.innerWidth < 768 ? 15 : 40,
           },
           opacity: {
             value: 0.2,

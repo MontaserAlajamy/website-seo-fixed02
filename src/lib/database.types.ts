@@ -57,6 +57,8 @@ export interface Database {
           featured: boolean
           order_index: number
           tags: string[]
+          video_source: 'vimeo' | 'cloudflare' | 'youtube' | 'direct'
+          video_url: string | null
           created_at: string
           updated_at: string
         }
@@ -70,6 +72,8 @@ export interface Database {
           featured?: boolean
           order_index?: number
           tags?: string[]
+          video_source?: 'vimeo' | 'cloudflare' | 'youtube' | 'direct'
+          video_url?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -83,6 +87,8 @@ export interface Database {
           featured?: boolean
           order_index?: number
           tags?: string[]
+          video_source?: 'vimeo' | 'cloudflare' | 'youtube' | 'direct'
+          video_url?: string | null
           updated_at?: string
         }
       }
@@ -224,6 +230,67 @@ export interface Database {
           order_index?: number
         }
       }
+      blog_posts: {
+        Row: {
+          id: string
+          title: string
+          slug: string
+          excerpt: string
+          content: string
+          cover_image_url: string | null
+          status: 'draft' | 'published'
+          published_at: string | null
+          tags: string[]
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          title: string
+          slug: string
+          excerpt?: string
+          content?: string
+          cover_image_url?: string | null
+          status?: 'draft' | 'published'
+          published_at?: string | null
+          tags?: string[]
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          title?: string
+          slug?: string
+          excerpt?: string
+          content?: string
+          cover_image_url?: string | null
+          status?: 'draft' | 'published'
+          published_at?: string | null
+          tags?: string[]
+          updated_at?: string
+        }
+      }
+      site_content: {
+        Row: {
+          id: string
+          content: string
+          content_type: 'text' | 'html' | 'image_url' | 'json'
+          updated_at: string
+        }
+        Insert: {
+          id: string
+          content?: string
+          content_type?: 'text' | 'html' | 'image_url' | 'json'
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          content?: string
+          content_type?: 'text' | 'html' | 'image_url' | 'json'
+          updated_at?: string
+        }
+      }
     }
   }
 }
+

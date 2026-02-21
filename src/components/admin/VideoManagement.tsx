@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Plus, Edit, Trash2, Save, X, Star } from 'lucide-react';
+import { Plus, Edit, Trash2, Save, X, Star, Globe } from 'lucide-react';
 import { useVideoProjects } from '../../hooks/useVideoProjects';
 import { CATEGORIES } from '../../lib/constants';
-import VimeoPlayer from '../VimeoPlayer';
+import UniversalPlayer, { detectVideoSource, type VideoSource } from '../UniversalPlayer';
 
 export default function VideoManagement() {
   const { projects, loading, addProject, updateProject, deleteProject } = useVideoProjects();
@@ -14,9 +14,12 @@ export default function VideoManagement() {
     description: '',
     category: CATEGORIES[0],
     vimeo_id: '',
+    video_url: '',
+    video_source: 'vimeo' as VideoSource,
     featured: false,
     tags: [] as string[],
   });
+  const [detectedSource, setDetectedSource] = useState<string>('');
 
   const resetForm = () => {
     setFormData({
@@ -24,9 +27,12 @@ export default function VideoManagement() {
       description: '',
       category: CATEGORIES[0],
       vimeo_id: '',
+      video_url: '',
+      video_source: 'vimeo' as VideoSource,
       featured: false,
       tags: [],
     });
+    setDetectedSource('');
     setShowAddForm(false);
     setEditingId(null);
   };
@@ -36,26 +42,47 @@ export default function VideoManagement() {
       title: project.title,
       description: project.description,
       category: project.category,
-      vimeo_id: project.vimeo_id,
+      vimeo_id: project.vimeo_id || '',
+      video_url: project.video_url || '',
+      video_source: (project.video_source as VideoSource) || 'vimeo',
       featured: project.featured,
       tags: project.tags || [],
     });
     setEditingId(project.id);
   };
 
+  const handleVideoUrlChange = (url: string) => {
+    setFormData(prev => ({ ...prev, video_url: url }));
+    if (url.trim()) {
+      const detected = detectVideoSource(url);
+      setDetectedSource(`${detected.source} (ID: ${detected.id.substring(0, 20)}${detected.id.length > 20 ? '...' : ''})`);
+      setFormData(prev => ({
+        ...prev,
+        video_url: url,
+        video_source: detected.source,
+        vimeo_id: detected.source === 'vimeo' ? detected.id : prev.vimeo_id,
+      }));
+    } else {
+      setDetectedSource('');
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    const thumbnail = formData.vimeo_id
+      ? `https://vumbnail.com/${formData.vimeo_id}.jpg`
+      : '';
+
+    const submitData = {
+      ...formData,
+      thumbnail_url: thumbnail,
+    };
+
     if (editingId) {
-      await updateProject(editingId, {
-        ...formData,
-        thumbnail_url: `https://vumbnail.com/${formData.vimeo_id}.jpg`,
-      });
+      await updateProject(editingId, submitData);
     } else {
-      await addProject({
-        ...formData,
-        thumbnail_url: `https://vumbnail.com/${formData.vimeo_id}.jpg`,
-      });
+      await addProject(submitData);
     }
 
     resetForm();
@@ -143,16 +170,32 @@ export default function VideoManagement() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Vimeo ID *
+                <Globe className="w-4 h-4 inline mr-1" />
+                Video URL or Vimeo ID *
               </label>
               <input
                 type="text"
                 required
-                value={formData.vimeo_id}
-                onChange={(e) => setFormData({ ...formData, vimeo_id: e.target.value })}
+                value={formData.video_url || formData.vimeo_id}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  // If it looks like a URL, auto-detect
+                  if (val.includes('://') || val.includes('.com')) {
+                    handleVideoUrlChange(val);
+                  } else {
+                    // Treat as Vimeo ID
+                    setFormData({ ...formData, vimeo_id: val, video_source: 'vimeo' });
+                    setDetectedSource(val ? `vimeo (ID: ${val})` : '');
+                  }
+                }}
                 className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
-                placeholder="123456789"
+                placeholder="Paste Vimeo/YouTube/Cloudflare URL or Vimeo ID"
               />
+              {detectedSource && (
+                <p className="text-xs text-green-600 dark:text-green-400 mt-1">
+                  ✓ Detected: {detectedSource}
+                </p>
+              )}
             </div>
 
             <div>
@@ -227,7 +270,11 @@ export default function VideoManagement() {
             className="bg-white dark:bg-gray-700 rounded-lg shadow-lg overflow-hidden"
           >
             <div className="aspect-video">
-              <VimeoPlayer videoId={project.vimeo_id} />
+              <UniversalPlayer
+                videoId={project.vimeo_id}
+                videoUrl={project.video_url}
+                source={project.video_source as VideoSource || 'vimeo'}
+              />
             </div>
             <div className="p-4">
               <div className="flex justify-between items-start mb-2">

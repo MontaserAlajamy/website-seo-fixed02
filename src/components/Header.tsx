@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, Moon, Sun, Lock } from 'lucide-react';
+import { Menu, Moon, Sun } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
@@ -11,10 +11,15 @@ interface HeaderProps {
 export default function Header({ toggleTheme, isDarkMode }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
+  const navLinks = [
+    { to: '/', label: 'Home' },
+    { to: '/portfolio', label: 'Portfolio' },
+    { to: '/photography', label: 'Photography' },
+    { to: '/blog', label: 'Blog' },
+  ];
+
   return (
-    <motion.header
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
+    <header
       className="fixed w-full z-50 bg-opacity-95 dark:bg-opacity-95 bg-white dark:bg-gray-900 backdrop-blur-sm"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -27,24 +32,15 @@ export default function Header({ toggleTheme, isDarkMode }: HeaderProps) {
           </Link>
 
           <div className="hidden md:flex items-center space-x-8">
-            <Link
-              to="/"
-              className="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 hover:scale-105 transition-all"
-            >
-              Home
-            </Link>
-            <Link
-              to="/portfolio"
-              className="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 hover:scale-105 transition-all"
-            >
-              Portfolio
-            </Link>
-            <Link
-              to="/admin"
-              className="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 hover:scale-105 transition-all"
-            >
-              <Lock className="w-5 h-5" />
-            </Link>
+            {navLinks.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                className="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 hover:scale-105 transition-all"
+              >
+                {link.label}
+              </Link>
+            ))}
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
@@ -56,7 +52,7 @@ export default function Header({ toggleTheme, isDarkMode }: HeaderProps) {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => window.contactForm.showModal()}
+              onClick={() => (window as any).contactForm.showModal()}
               className="px-6 py-2 bg-gradient-to-r from-purple-600 to-blue-500 text-white rounded-full hover:from-purple-700 hover:to-blue-600 transition-all duration-300"
             >
               Contact Me
@@ -80,26 +76,21 @@ export default function Header({ toggleTheme, isDarkMode }: HeaderProps) {
           className="md:hidden bg-white dark:bg-gray-900 py-4"
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
-            <Link
-              to="/"
-              className="block text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400"
-            >
-              Home
-            </Link>
-            <Link
-              to="/portfolio"
-              className="block text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400"
-            >
-              Portfolio
-            </Link>
-            <Link
-              to="/admin"
-              className="block text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400"
-            >
-              Admin
-            </Link>
+            {navLinks.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                onClick={() => setIsMenuOpen(false)}
+                className="block text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400"
+              >
+                {link.label}
+              </Link>
+            ))}
             <button
-              onClick={() => window.contactForm.showModal()}
+              onClick={() => {
+                (window as any).contactForm.showModal();
+                setIsMenuOpen(false);
+              }}
               className="w-full px-6 py-2 bg-gradient-to-r from-purple-600 to-blue-500 text-white rounded-full hover:from-purple-700 hover:to-blue-600 transition-all duration-300"
             >
               Contact Me
@@ -107,6 +98,6 @@ export default function Header({ toggleTheme, isDarkMode }: HeaderProps) {
           </div>
         </motion.div>
       )}
-    </motion.header>
+    </header>
   );
 }
