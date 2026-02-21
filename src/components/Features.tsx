@@ -1,57 +1,79 @@
-import React from 'react';
 import { motion } from 'framer-motion';
-import { Film, Wand2, Palette, Zap, Users } from 'lucide-react';
+import { Film, Palette, Music, Sparkles, Award } from 'lucide-react';
+import { useSkills } from '../hooks/useSkills';
+import type { LucideIcon } from 'lucide-react';
 
-const features = [
+// Map of icon names (from DB) to Lucide components
+const iconMap: Record<string, LucideIcon> = {
+  film: Film,
+  palette: Palette,
+  music: Music,
+  sparkles: Sparkles,
+  award: Award,
+};
+
+// Static fallback features when no skills exist in the database
+const fallbackFeatures = [
   {
     icon: Film,
     title: 'Cinematic Excellence',
     description: 'Crafting visually stunning narratives with state-of-the-art equipment and techniques. Every frame is meticulously composed to deliver maximum impact.'
   },
   {
-    icon: Wand2,
-    title: 'Creative Direction',
-    description: 'Transforming concepts into compelling visual stories through innovative storytelling approaches. We bring your vision to life with a unique creative perspective.'
-  },
-  {
     icon: Palette,
-    title: 'Color Mastery',
-    description: 'Professional color grading that enhances mood and atmosphere. Our advanced color science ensures your content stands out with a distinctive visual style.'
+    title: 'Color Grading',
+    description: 'Professional color correction and grading that brings your vision to life. Creating mood, atmosphere, and visual consistency across every scene.'
   },
   {
-    icon: Zap,
-    title: 'Rapid Delivery',
-    description: 'Efficient workflow systems that maintain quality while meeting tight deadlines. Quick turnaround without compromising on creative excellence.'
+    icon: Music,
+    title: 'Sound Design',
+    description: 'Immersive audio experiences that complement and enhance the visual narrative. From subtle ambience to powerful sound effects.'
   },
   {
-    icon: Users,
-    title: 'Collaborative Approach',
-    description: 'Working closely with clients to understand and execute their vision. Our partnership-focused process ensures your story is told exactly as you envision it.'
+    icon: Sparkles,
+    title: 'Visual Effects',
+    description: 'Seamless visual effects and motion graphics that elevate your content. Adding that extra layer of polish and professionalism.'
   }
 ];
 
 export default function Features() {
-  return (
-    <section className="py-20 bg-gray-50 dark:bg-gray-800">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent">
-            Why Choose Us
-          </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-300">
-            Elevating your content with professional expertise and creative innovation
-          </p>
-        </div>
+  const { skills, loading } = useSkills();
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+  // Use database skills if available, otherwise fall back to static data
+  const features = skills.length > 0
+    ? skills.map((skill) => ({
+      icon: iconMap[skill.icon?.toLowerCase()] || Award,
+      title: skill.name,
+      description: skill.description,
+    }))
+    : fallbackFeatures;
+
+  return (
+    <section className="py-20 bg-white dark:bg-gray-900">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent">
+            What I Do Best
+          </h2>
+          <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+            Transforming raw footage into captivating stories through expert editing, color grading, and post-production mastery.
+          </p>
+        </motion.div>
+
+        <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-${Math.min(features.length, 4)} gap-8`}>
           {features.map((feature, index) => (
             <motion.div
               key={feature.title}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
               viewport={{ once: true }}
-              className="bg-white dark:bg-gray-700 rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300"
+              transition={{ delay: index * 0.1 }}
+              className="p-6 rounded-xl bg-gray-50 dark:bg-gray-800 hover:shadow-lg transition-shadow"
             >
               <div className="flex items-center justify-center w-12 h-12 mb-4 rounded-lg bg-gradient-to-r from-purple-600/10 to-blue-500/10">
                 <feature.icon className="w-6 h-6 text-purple-600 dark:text-purple-400" />
@@ -65,6 +87,12 @@ export default function Features() {
             </motion.div>
           ))}
         </div>
+
+        {loading && (
+          <div className="flex items-center justify-center py-8">
+            <div className="w-8 h-8 border-4 border-purple-600 border-t-transparent rounded-full animate-spin" />
+          </div>
+        )}
       </div>
     </section>
   );

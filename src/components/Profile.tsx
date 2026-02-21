@@ -1,84 +1,94 @@
-import React from 'react';
 import { motion } from 'framer-motion';
-import { Phone, Clock, Globe } from 'lucide-react';
-import { useProfile } from '../hooks/useProfile';
+import { MapPin, Mail, Phone, User } from 'lucide-react';
+import { useSupabaseProfile } from '../hooks/useSupabaseProfile';
+
+// Fallback profile data when database is empty
+const fallbackProfile = {
+  name: 'Muntasir Elagami',
+  title: 'Professional Video Editor & Filmmaker',
+  bio: 'With over a decade of experience in video editing and production, I specialize in crafting compelling visual narratives that captivate audiences and deliver powerful messages.',
+  avatar_url: 'https://live.staticflickr.com/65535/54228285929_32905e3f5b_k.jpg',
+  email: '',
+  phone: null as string | null,
+  location: null as string | null,
+};
 
 export default function Profile() {
-  const { profile } = useProfile();
+  const { profile: dbProfile, loading } = useSupabaseProfile();
+
+  // Use database profile if available, otherwise fall back to static data
+  const profile = dbProfile ?? fallbackProfile;
 
   return (
     <section className="py-20 bg-gray-50 dark:bg-gray-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="relative"
-          >
-            {profile.photo ? (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="flex flex-col md:flex-row items-center gap-12"
+        >
+          <div className="w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden shadow-2xl ring-4 ring-purple-500/20 flex-shrink-0">
+            {profile.avatar_url ? (
               <img
-                src={profile.photo}
+                src={profile.avatar_url}
                 alt={profile.name}
-                className="rounded-lg shadow-2xl w-full aspect-square object-cover"
+                className="w-full h-full object-cover"
               />
             ) : (
-              <div className="rounded-lg shadow-2xl w-full aspect-square bg-gradient-to-r from-purple-600 to-blue-500" />
+              <div className="w-full h-full bg-gradient-to-br from-purple-600 to-blue-500 flex items-center justify-center">
+                <User className="w-24 h-24 text-white/80" />
+              </div>
             )}
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-blue-500/20 rounded-lg" />
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-4xl font-bold mb-6 bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent">
-              {profile.name || 'Muntasir Elagami'}
+          <div className="flex-1 text-center md:text-left">
+            <h2 className="text-3xl font-bold mb-2 bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent">
+              {profile.name}
             </h2>
-            <p className="text-gray-700 dark:text-gray-300 mb-8 text-lg">
-              {profile.bio ||
-                'Muntasir Elagami is a visionary Video Editor and Producer based in Dubai, UAE, blending a foundation in Computer Science with a passion for storytelling. From honing his craft at Dialektik Films in Khartoum to shaping narratives at Libyan TV, his journey reflects a seamless fusion of technical expertise and artistic expression. A master of sound and visuals, Muntasir brings stories to life with precision and creativity, drawing inspiration from music, technology, and the rhythm of everyday life. Fluent in Arabic and English, his work resonates with a universal elegance, leaving an indelible mark on every frame he touches.'}
+            {profile.title && (
+              <p className="text-lg text-purple-600 dark:text-purple-400 mb-4 font-medium">
+                {profile.title}
+              </p>
+            )}
+            <p className="text-gray-600 dark:text-gray-300 mb-6 max-w-2xl">
+              {profile.bio}
             </p>
 
-            <div className="space-y-4">
-              {profile.visibility.showWhatsApp && (
-                <div className="flex items-center gap-3">
-                  <Phone className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                  <span className="text-gray-700 dark:text-gray-300">
-                    WhatsApp: {profile.contact.whatsapp}
-                  </span>
+            <div className="flex flex-wrap gap-4 justify-center md:justify-start">
+              {profile.location && (
+                <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+                  <MapPin className="w-4 h-4" />
+                  <span>{profile.location}</span>
                 </div>
               )}
-
-              {profile.visibility.showAvailability && (
-                <div className="flex items-center gap-3">
-                  <Clock className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                  <span className="text-gray-700 dark:text-gray-300">
-                    Available: {profile.contact.availableHours}
-                  </span>
-                </div>
+              {profile.email && (
+                <a
+                  href={`mailto:${profile.email}`}
+                  className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+                >
+                  <Mail className="w-4 h-4" />
+                  <span>{profile.email}</span>
+                </a>
               )}
-
-              {profile.visibility.showLanguages &&
-                profile.contact.languages.length > 0 && (
-                  <div className="flex items-center gap-3">
-                    <Globe className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                    <div className="flex flex-wrap gap-2">
-                      {profile.contact.languages.map((lang) => (
-                        <span
-                          key={lang}
-                          className="px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-full text-sm"
-                        >
-                          {lang}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
+              {profile.phone && (
+                <a
+                  href={`tel:${profile.phone}`}
+                  className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+                >
+                  <Phone className="w-4 h-4" />
+                  <span>{profile.phone}</span>
+                </a>
+              )}
             </div>
-          </motion.div>
-        </div>
+          </div>
+        </motion.div>
+
+        {loading && (
+          <div className="flex items-center justify-center py-8">
+            <div className="w-8 h-8 border-4 border-purple-600 border-t-transparent rounded-full animate-spin" />
+          </div>
+        )}
       </div>
     </section>
   );
