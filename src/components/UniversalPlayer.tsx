@@ -113,12 +113,29 @@ export default function UniversalPlayer({
     const opts = { autoplay, muted: muted || background, controls: controls && !background, loop: loop || background, background };
 
     const containerStyle = fill
-        ? { position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' } as const
+        ? { position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', overflow: 'hidden' } as const
         : { position: 'relative', paddingBottom: '56.25%', width: '100%' } as const;
 
-    const mediaClass = fill
-        ? "absolute inset-0 w-full h-full object-cover scale-[1.02]" // Subtle scale to hide any edge gaps
-        : "absolute inset-0 w-full h-full";
+    const mediaStyle = fill
+        ? {
+            position: 'absolute' as const,
+            top: '50%',
+            left: '50%',
+            width: '100vw',
+            height: '56.25vw', // 9/16 * 100
+            minHeight: '100vh',
+            minWidth: 'calc(100vh * (16/9))',
+            transform: 'translate(-50%, -50%) scale(1.05)',
+            objectFit: 'cover' as const, // for direct video
+        }
+        : {
+            position: 'absolute' as const,
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            border: 'none',
+        };
 
     // Direct video — use <video> tag
     if (resolvedSource === 'direct') {
@@ -126,7 +143,7 @@ export default function UniversalPlayer({
             <div className={`${className}`} style={containerStyle}>
                 <video
                     src={resolvedId}
-                    className={mediaClass}
+                    style={mediaStyle as any}
                     autoPlay={opts.autoplay}
                     muted={opts.muted}
                     controls={opts.controls}
@@ -155,10 +172,9 @@ export default function UniversalPlayer({
         <div className={`${className}`} style={containerStyle}>
             <iframe
                 src={iframeSrc}
-                className={mediaClass}
+                style={mediaStyle as any}
                 allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
                 allowFullScreen
-                style={{ border: 'none' }}
             />
         </div>
     );
