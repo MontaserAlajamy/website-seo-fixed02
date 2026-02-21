@@ -2,6 +2,7 @@ import React from 'react';
 import { Menu, Moon, Sun } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import CinematicLogo from './CinematicLogo';
 
 interface HeaderProps {
   toggleTheme: () => void;
@@ -28,16 +29,17 @@ export default function Header({ toggleTheme, isDarkMode }: HeaderProps) {
             to="/"
             className="flex items-center gap-3 group transition-transform hover:scale-105"
           >
-            <div className="relative w-10 h-10 overflow-hidden rounded-lg bg-gray-900 shadow-lg shadow-purple-500/20 group-hover:shadow-purple-500/40 transition-shadow">
-              <img
-                src="/logo.png"
-                alt="Ajamy Productions"
-                className="w-full h-full object-cover scale-110"
-              />
+            <div className="relative p-1 rounded-xl bg-gray-50 dark:bg-gray-800 shadow-inner group-hover:shadow-purple-500/20 transition-all duration-300">
+              <CinematicLogo className="w-8 h-8 sm:w-10 sm:h-10" />
             </div>
-            <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent group-hover:from-purple-300 group-hover:to-blue-300 transition-colors">
-              Muntasir Elagami
-            </span>
+            <div className="flex flex-col leading-tight">
+              <span className="text-lg sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent group-hover:from-purple-300 group-hover:to-blue-300 transition-colors">
+                Muntasir Elagami
+              </span>
+              <span className="text-[10px] sm:text-xs tracking-[0.2em] uppercase text-gray-500 dark:text-gray-400 font-medium">
+                Production
+              </span>
+            </div>
           </Link>
 
           <div className="hidden md:flex items-center space-x-8">

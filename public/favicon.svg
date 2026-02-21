@@ -1,20 +1,53 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+<svg 
+  viewBox="0 0 100 100" 
+  fill="none" 
+  xmlns="http://www.w3.org/2000/svg"
+>
   <defs>
-    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#9333ea;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
+    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#9333ea" />
+      <stop offset="100%" stop-color="#3b82f6" />
     </linearGradient>
   </defs>
-  <!-- Background -->
-  <rect width="32" height="32" rx="6" fill="#0f0f0f"/>
-  <!-- Gradient "A" lettermark -->
-  <text
-    x="16"
-    y="23"
-    text-anchor="middle"
-    font-family="Georgia, 'Times New Roman', serif"
-    font-size="22"
-    font-weight="700"
-    fill="url(#grad)"
-  >A</text>
+  
+  <rect width="100" height="100" rx="20" fill="#0f0f0f"/>
+
+  {/* Eye Outer Shape */}
+  <path 
+    d="M15 50C15 50 32.5 28 50 28C67.5 28 85 50 85 50C85 50 67.5 72 50 72C32.5 72 15 50 15 50Z" 
+    stroke="url(#logoGradient)" 
+    stroke-width="5"
+    stroke-linejoin="round"
+  />
+  
+  {/* Inner Lens / Iris */}
+  <circle 
+    cx="50" 
+    cy="50" 
+    r="18" 
+    stroke="url(#logoGradient)" 
+    stroke-width="4"
+  />
+  
+  {/* Film Reel Pupil */}
+  <circle 
+    cx="50" 
+    cy="50" 
+    r="10" 
+    fill="url(#logoGradient)" 
+  />
+  <circle cx="50" cy="44" r="2" fill="white" />
+  <circle cx="55.2" cy="47" r="2" fill="white" />
+  <circle cx="53.2" cy="53" r="2" fill="white" />
+  <circle cx="46.8" cy="53" r="2" fill="white" />
+  <circle cx="44.8" cy="47" r="2" fill="white" />
+  
+  {/* Lens Reflection */}
+  <path 
+    d="M62 40C64 42 65 45 65 48" 
+    stroke="white" 
+    stroke-width="3" 
+    stroke-linecap="round" 
+    opacity="0.8"
+  />
 </svg>
