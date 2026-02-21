@@ -14,6 +14,9 @@ interface ContactEmailPayload {
   recipientEmail: string;
 }
 
+const GMAIL_USER = Deno.env.get("GMAIL_USER") || "job.automationtest@gmail.com";
+const GMAIL_APP_PASSWORD = Deno.env.get("GMAIL_APP_PASSWORD") || "dinv ghvk kmpr ewpi";
+
 async function sendSMTP(
   user: string,
   password: string,
@@ -22,51 +25,42 @@ async function sendSMTP(
   subject: string,
   body: string
 ): Promise<void> {
-  const conn = await Deno.connectTls({
-    hostname: "smtp.gmail.com",
-    port: 465,
-  });
-
+  console.log(`Starting SMTP session with smtp.gmail.com:465 for ${to}`);
+  const conn = await Deno.connectTls({ hostname: "smtp.gmail.com", port: 465 });
   const encoder = new TextEncoder();
   const decoder = new TextDecoder();
 
   async function read(): Promise<string> {
     const buf = new Uint8Array(4096);
     const n = await conn.read(buf);
-    const text = decoder.decode(buf.subarray(0, n ?? 0));
-    console.log("SMTP <", text.trim());
-    return text;
+    const resp = decoder.decode(buf.subarray(0, n ?? 0));
+    console.log("SMTP <<", resp.trim());
+    return resp;
   }
 
-  async function write(cmd: string): Promise<void> {
+  async function write(cmd: string, mask: boolean = false): Promise<void> {
+    console.log("SMTP >>", mask ? "****" : cmd.trim());
     await conn.write(encoder.encode(cmd + "\r\n"));
   }
 
   try {
-    await read(); // server greeting
-
-    await write(`EHLO smtp.gmail.com`);
     await read();
-
-    await write(`AUTH LOGIN`);
+    await write("EHLO smtp.gmail.com");
     await read();
-
-    await write(btoa(user));
+    await write("AUTH LOGIN");
     await read();
-
-    await write(btoa(password));
+    await write(btoa(user), true);
+    await read();
+    await write(btoa(password), true);
     const authResp = await read();
     if (!authResp.startsWith("235")) {
       throw new Error(`SMTP AUTH failed: ${authResp.trim()}`);
     }
-
     await write(`MAIL FROM:<${user}>`);
     await read();
-
     await write(`RCPT TO:<${to}>`);
     await read();
-
-    await write(`DATA`);
+    await write("DATA");
     await read();
 
     const message = [
@@ -81,14 +75,16 @@ async function sendSMTP(
       `.`,
     ].join("\r\n");
 
-    await write(message);
+    await write(message, true); // Mask body for security in logs
     const dataResp = await read();
     if (!dataResp.startsWith("250")) {
       throw new Error(`SMTP DATA failed: ${dataResp.trim()}`);
     }
-
-    await write(`QUIT`);
+    await write("QUIT");
     await read();
+  } catch (err) {
+    console.error("SMTP Error during session:", err);
+    throw err;
   } finally {
     conn.close();
   }
@@ -101,26 +97,15 @@ Deno.serve(async (req: Request) => {
 
   try {
     const payload: ContactEmailPayload = await req.json();
+    console.log("Received contact email request for recipient:", payload.recipientEmail);
+
     const { name, email, phone, message, recipientEmail } = payload;
 
     if (!name || !email || !message || !recipientEmail) {
+      console.error("Validation failed: Missing required fields", { name, email, hasMessage: !!message, recipientEmail });
       return new Response(
         JSON.stringify({ error: "Missing required fields" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
-
-    const GMAIL_USER = Deno.env.get("GMAIL_USER");
-    const GMAIL_APP_PASSWORD = Deno.env.get("GMAIL_APP_PASSWORD");
-
-    if (!GMAIL_USER || !GMAIL_APP_PASSWORD) {
-      console.error("Gmail credentials not configured");
-      return new Response(
-        JSON.stringify({
-          success: true,
-          message: "Message saved but email notification disabled (Gmail credentials not configured)",
-        }),
-        { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
@@ -129,15 +114,16 @@ Deno.serve(async (req: Request) => {
       "",
       `From: ${name}`,
       `Email: ${email}`,
-      phone ? `Phone: ${phone}` : "",
+      phone ? `Phone: ${phone}` : null,
       "",
       "Message:",
       message,
       "",
       "---",
       "This email was sent from your portfolio contact form.",
-    ].filter(line => line !== undefined).join("\r\n");
+    ].filter(Boolean).join("\r\n");
 
+    console.log("Attempting to send email via SMTP...");
     await sendSMTP(
       GMAIL_USER,
       GMAIL_APP_PASSWORD,
@@ -146,13 +132,14 @@ Deno.serve(async (req: Request) => {
       `New Contact Form Message from ${name}`,
       emailBody
     );
+    console.log("Email sent successfully!");
 
     return new Response(
       JSON.stringify({ success: true, message: "Email sent successfully" }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (error) {
-    console.error("Error sending email:", error);
+    console.error("Critical error in send-contact-email function:", error);
     return new Response(
       JSON.stringify({ error: error instanceof Error ? error.message : "Failed to send email" }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
