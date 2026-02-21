@@ -16,6 +16,23 @@ interface UniversalPlayerProps {
 }
 
 /**
+ * Get a thumbnail URL for a video source.
+ */
+export function getThumbnailUrl(source: VideoSource, id: string, subdomain?: string): string {
+    if (source === 'vimeo') {
+        return `https://vumbnail.com/${id}.jpg`;
+    }
+    if (source === 'youtube') {
+        return `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
+    }
+    if (source === 'cloudflare') {
+        const sub = subdomain || 'customer-ajj0x7flqjhaqqqt';
+        return `https://${sub}.cloudflarestream.com/${id}/thumbnails/thumbnail.jpg`;
+    }
+    return '';
+}
+
+/**
  * Detect the video source from a URL string.
  */
 export function detectVideoSource(url: string): { source: VideoSource; id: string; subdomain?: string } {

@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Plus, Edit, Trash2, Save, X, Star, Globe } from 'lucide-react';
 import { useVideoProjects } from '../../hooks/useVideoProjects';
 import { CATEGORIES } from '../../lib/constants';
-import UniversalPlayer, { detectVideoSource, type VideoSource } from '../UniversalPlayer';
+import UniversalPlayer, { detectVideoSource, getThumbnailUrl, type VideoSource } from '../UniversalPlayer';
 
 export default function VideoManagement() {
   const { projects, loading, addProject, updateProject, deleteProject } = useVideoProjects();
@@ -18,6 +18,7 @@ export default function VideoManagement() {
     video_source: 'vimeo' as VideoSource,
     featured: false,
     tags: [] as string[],
+    subdomain: '',
   });
   const [detectedSource, setDetectedSource] = useState<string>('');
 
@@ -31,6 +32,7 @@ export default function VideoManagement() {
       video_source: 'vimeo' as VideoSource,
       featured: false,
       tags: [],
+      subdomain: '',
     });
     setDetectedSource('');
     setShowAddForm(false);
@@ -38,6 +40,13 @@ export default function VideoManagement() {
   };
 
   const handleEdit = (project: any) => {
+    // Detect subdomain from video_url if it's cloudflare
+    let sub = '';
+    if (project.video_url) {
+      const d = detectVideoSource(project.video_url);
+      if (d.subdomain) sub = d.subdomain;
+    }
+
     setFormData({
       title: project.title,
       description: project.description,
@@ -47,20 +56,29 @@ export default function VideoManagement() {
       video_source: (project.video_source as VideoSource) || 'vimeo',
       featured: project.featured,
       tags: project.tags || [],
+      subdomain: sub,
     });
     setEditingId(project.id);
   };
 
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const thumbnail = formData.vimeo_id
-      ? `https://vumbnail.com/${formData.vimeo_id}.jpg`
-      : '';
+    // Determine target ID and Source
+    const targetSource = formData.video_source;
+    const targetId = targetSource === 'vimeo' ? formData.vimeo_id : (detectVideoSource(formData.video_url || formData.vimeo_id).id);
+
+    const thumbnail = getThumbnailUrl(targetSource, targetId, formData.subdomain);
 
     const submitData = {
-      ...formData,
+      title: formData.title,
+      description: formData.description,
+      category: formData.category,
+      vimeo_id: formData.vimeo_id,
+      video_url: formData.video_url,
+      video_source: formData.video_source,
+      featured: formData.featured,
+      tags: formData.tags,
       thumbnail_url: thumbnail,
     };
 
@@ -171,7 +189,8 @@ export default function VideoManagement() {
                       ...prev,
                       video_url: val.includes('://') ? val : '',
                       vimeo_id: detected.source === 'vimeo' ? detected.id : prev.vimeo_id,
-                      video_source: detected.source
+                      video_source: detected.source,
+                      subdomain: detected.subdomain || ''
                     }));
                   } else {
                     setDetectedSource('');
